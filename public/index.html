@@ -1,0 +1,66 @@
+<button
+class="order"
+onclick="orderProduct('${product.name}')">
+
+اطلب المنتج
+
+</button>
+
+</div>
+
+</div>
+
+`).join("");
+
+}
+
+
+function categoryName(category){
+
+if(category==="mobile") return "موبايلات";
+
+if(category==="airpods") return "إيربود";
+
+if(category==="power") return "باور بانك";
+
+if(category==="charger") return "شواحن";
+
+return "منتج";
+
+}
+
+
+function showCategory(category){
+
+const filtered=products.filter(
+product=>product.category===category
+);
+
+renderProducts(filtered);
+
+document
+.getElementById("products")
+.scrollIntoView({
+behavior:"smooth"
+});
+
+}
+
+
+function orderProduct(name){
+
+alert(
+"تم اختيار المنتج:\n\n"+
+name+
+"\n\nراح نربط الطلب والواتساب بلوحة الإدارة بالخطوة الجاية."
+);
+
+}
+
+
+renderProducts();
+
+</script>
+
+</body>
+</html>
