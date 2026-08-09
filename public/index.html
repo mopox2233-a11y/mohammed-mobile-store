@@ -1,243 +1,110 @@
-{
-id:8,
-category:"charger",
-name:"Fast Charger 25W",
-price:18000,
-icon:"🔌",
-desc:"شحن سريع وآمن"
-},
+document.getElementById(
+"productDescription"
+).value =
+product.description || "";
 
-{
-id:9,
-category:"charger",
-name:"Type-C Fast Charger",
-price:22000,
-icon:"⚡",
-desc:"USB-C • شحن سريع"
-},
 
-{
-id:10,
-category:"accessory",
-name:"Premium Phone Case",
-price:12000,
-icon:"🛡️",
-desc:"حماية قوية"
-},
+document.getElementById(
+"productOffer"
+).checked =
+product.offer === true;
 
-{
-id:11,
-category:"accessory",
-name:"Type-C Cable",
-price:9000,
-icon:"🔗",
-desc:"متين وسريع"
-},
 
-{
-id:12,
-category:"accessory",
-name:"Car Phone Holder",
-price:18000,
-icon:"🚗",
-desc:"ثبات قوي"
-}
-
-];
-
-let selectedCategory="all";
-let cart=[];
-
-function money(number){
-return number.toLocaleString("ar-IQ")+" د.ع";
-}
-
-function filterProducts(category){
-
-selectedCategory=category;
-
-renderProducts();
-
-document.getElementById("products").scrollIntoView({
+window.scrollTo({
+top:0,
 behavior:"smooth"
 });
 
 }
 
-function renderProducts(){
 
-const search=document.getElementById("search").value.toLowerCase();
+/* =========================
+   DELETE
+========================= */
 
-const grid=document.getElementById("productsGrid");
+function deleteProduct(id){
 
-const filtered=products.filter(product=>{
+if(!confirm("متأكد تريد حذف المنتج؟")){
 
-const categoryOK=
-selectedCategory==="all" ||
-product.category===selectedCategory;
+return;
 
-const searchOK=
-product.name.toLowerCase().includes(search);
+}
 
-return categoryOK && searchOK;
+
+products =
+products.filter(function(product){
+
+return product.id !== id;
 
 });
 
-grid.innerHTML=filtered.map(product=>
 
-<article class="product">
+cart =
+cart.filter(function(item){
 
-<div class="product-img">
-${product.icon}
-</div>
+return item.id !== id;
 
-<div class="product-body">
+});
 
-<h3>${product.name}</h3>
 
-<p>${product.desc}</p>
+saveProducts();
 
-<div class="product-bottom">
-
-<span class="price">
-${money(product.price)}
-</span>
-
-<button
-class="add"
-onclick="addToCart(${product.id})"
->
-+ للسلة
-</button>
-
-</div>
-
-</div>
-
-</article>
-
-).join("");
-
-}
-
-function addToCart(id){
-
-cart.push(id);
-
-renderCart();
-
-openCart();
-
-}
-
-function renderCart(){
-
-const items=document.getElementById("cartItems");
-
-const count=document.getElementById("cartCount");
-
-const total=document.getElementById("cartTotal");
-
-count.textContent=cart.length;
-
-if(cart.length===0){
-
-items.innerHTML=
-'<p style="color:#78857f">السلة فارغة حالياً.</p>';
-
-total.textContent="0 د.ع";
-
-return;
-
-}
-
-let totalPrice=0;
-
-items.innerHTML=cart.map((id,index)=>{
-
-const product=products.find(p=>p.id===id);
-
-totalPrice+=product.price;
-
-return 
-
-<div class="cart-item">
-
-<div class="cart-item-icon">
-${product.icon}
-</div>
-
-<div class="cart-item-info">
-
-<strong>${product.name}</strong>
-
-<small>${money(product.price)}</small>
-
-</div>
-
-<button
-class="remove"
-onclick="removeFromCart(${index})"
->
-حذف
-</button>
-
-</div>
-
-;
-
-}).join("");
-
-total.textContent=money(totalPrice);
-
-}
-
-function removeFromCart(index){
-
-cart.splice(index,1);
-
-renderCart();
-
-}
-
-function openCart(){
-
-document.getElementById("cart").classList.add("open");
-
-}
-
-function closeCart(){
-
-document.getElementById("cart").classList.remove("open");
-
-}
-
-function checkout(){
-
-if(cart.length===0){
-
-alert("السلة فارغة.");
-
-return;
-
-}
-
-const message=
-"السلام عليكم، أريد الطلب من MOHAMMED MOBILE STORE%0A%0A"+
-cart.map(id=>{
-const p=products.find(x=>x.id===id);
-return "• "+p.name+" - "+money(p.price);
-}).join("%0A");
-
-window.open(
-"https://wa.me/9647830000745?text="+message,
-"_blank"
-);
-
-}
+saveCart();
 
 renderProducts();
-renderCart();
+
+updateAdmin();
+
+toast("تم حذف المنتج");
+
+}
+
+
+/* =========================
+   CLEAR FORM
+========================= */
+
+function clearProductForm(){
+
+document.getElementById(
+"editProductId"
+).value = "";
+
+
+document.getElementById(
+"productName"
+).value = "";
+
+
+document.getElementById(
+"productPrice"
+).value = "";
+
+
+document.getElementById(
+"productImage"
+).value = "";
+
+
+document.getElementById(
+"productDescription"
+).value = "";
+
+
+document.getElementById(
+"productOffer"
+).checked = false;
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+renderProducts();
+
+updateAdmin();
 
 </script>
 
